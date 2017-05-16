@@ -19,7 +19,7 @@ public class Main {
 			String command="root"; 
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
 			pw.print(command+"\r\n");
-
+			//teste
 			pw.print("admin"+"\r\n");
 			
 			while ((c = r.read()) != -1)

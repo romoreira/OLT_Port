@@ -1,31 +1,30 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Main {
 	public static void main(String args[]){
 		try{
-			Socket socket = new Socket("172.30.20.93", 23);
-			socket.setKeepAlive(true);
-			BufferedReader r = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			//PrintWriter w = new PrintWriter(socket.getOutputStream(),true);
+			Process p = Runtime.getRuntime().exec("ssh 172.24.158.210");
+			PrintStream out = new PrintStream(p.getOutputStream());
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
-			int c=0;
-			
-			String command="root"; 
-			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
-			pw.print(command+"\r\n");
-			pw.print("admin"+"\r\n");
-			
-			while ((c = r.read()) != -1){
-				System.out.print((char)c);
+			out.println("root");
+			while (in.ready()) {
+			  String s = in.readLine();
+			  System.out.println(s);
+			}
+			out.println("admin");
+
+			while (in.ready()) {
+				String s = in.readLine();
+				System.out.println(s);
 			}
 			
-			System.out.println("Chegou aqui");
-			
-			socket.close();
+			p.waitFor();
 		}catch(Exception e){
 			System.out.println("Erro: "+e);
 		}

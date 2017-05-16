@@ -13,18 +13,18 @@ public class Main {
 			//PrintWriter w = new PrintWriter(socket.getOutputStream(),true);
 
 			int c=0;
-			while ((c = r.read()) != -1)
-				System.out.print((char)c);
-
+			
 			String command="root"; 
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
 			pw.print(command+"\r\n");
-			//teste
 			pw.print("admin"+"\r\n");
 			
-			while ((c = r.read()) != -1)
+			while ((c = r.read()) != -1){
 				System.out.print((char)c);
-
+			}
+			
+			System.out.println("Chegou aqui");
+			
 			socket.close();
 		}catch(Exception e){
 			System.out.println("Erro: "+e);

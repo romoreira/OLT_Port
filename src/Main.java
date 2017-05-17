@@ -1,13 +1,16 @@
 import org.apache.commons.net.telnet.TelnetClient;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
@@ -240,6 +243,31 @@ public class Main {
 		}
     }
     
+    public static void registraLOG(String msg){
+    	FileWriter arquivo;
+    	Date data = new Date();
+    	SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+    	BufferedWriter conexao = null;
+    	try{
+    		FileWriter fw = new FileWriter("LOG_OLT_Port_huawei_concessao.txt", true);
+    		conexao = new BufferedWriter(fw);
+    	}
+    	catch(Exception e){
+    		System.out.println("Abrindo arquivo existente");
+    	}
+		
+		try {
+			conexao.newLine();
+			conexao.write("Leitura de porta de OLT concluida - "+msg+" - " + df.format(data));
+			conexao.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Erro ao criar arquivo temporario!"+e.getMessage());
+		}
+    }
+    
 	public static void main(String args[]){
 	
 //		for (int i = 0; i < args.length; i++){
@@ -301,5 +329,6 @@ public class Main {
 				}
 			}
 		}
+		registraLOG("");
 	}
 }

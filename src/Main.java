@@ -110,23 +110,33 @@ public class Main {
     			}
     			else{
     				if(comando.contains("display board")){
-//    					try {
-//            				char lastChar = pattern.charAt(pattern.length() - 1);
-//            				StringBuffer sb = new StringBuffer();
-//            				char ch = (char) in.read();
-//            				while (true) {
-//            					System.out.print(ch);
-//            					sb.append(ch);
-//            					if (ch == lastChar) {
-//            						if (sb.toString().endsWith(pattern)) {
-//            							return sb.toString();
-//            						}
-//            					}
-//            					ch = (char) in.read();
-//            				}
-//            			} catch (Exception e) {
-//            				e.printStackTrace();
-//            			}
+    					try {
+            				char lastChar = pattern.charAt(pattern.length() - 1);
+            				StringBuffer sb = new StringBuffer();
+            				char ch = (char) in.read();
+            				while (true) {
+            					System.out.print(ch);
+            					sb.append(ch);
+            					if ((ch == lastChar)) {
+            						if (sb.toString().endsWith(pattern)) {
+            							return sb.toString();
+            						}
+            					}
+            					else{
+            						if(sb.toString().contains("break")){
+            							try {
+            					            this.write("a");
+            					            Thread.sleep(4000);
+            					        } catch (Exception e) {
+            					            System.out.println("Erro: "+e.getMessage());
+            					        }
+            						}
+            					}
+            					ch = (char) in.read();
+            				}
+            			} catch (Exception e) {
+            				e.printStackTrace();
+            			}
     				}
     			}
     		}
@@ -147,6 +157,7 @@ public class Main {
     public String sendCommand(String command) {
         try {
             write(command);
+            Thread.sleep(10000);
             return readUntil(">", command);
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,9 +181,8 @@ public class Main {
 		//172.24.163.34
 		
 		try {
-            Main telnet = new Main("172.24.158.194", "root", "admin");
+            Main telnet = new Main("172.30.17.253", "root", "admin");
             telnet.sendCommand("scroll 512");
-            Thread.sleep(4000);
             telnet.sendCommand("display board 0/0");
             telnet.disconnect();
             System.out.println("DONE");

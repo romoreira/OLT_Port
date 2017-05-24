@@ -12,14 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.JOptionPane;
-
 public class Main {
 	
 	private TelnetClient telnet = new TelnetClient();
     private InputStream in;
     private PrintStream out;
-    private String prompt = "%";
 
     public Main(){}
     
@@ -244,7 +241,6 @@ public class Main {
     }
     
     public static void registraLOG(String msg){
-    	FileWriter arquivo;
     	Date data = new Date();
     	SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
     	BufferedWriter conexao = null;
@@ -269,22 +265,27 @@ public class Main {
     }
     
 	public static void main(String args[]){
-	
-//		for (int i = 0; i < args.length; i++){
-//            if(args[i] == null){
-//            	System.out.println("Erro com os parametros");
-//            }
-//		}
+		
+		if(args.length == 0){
+			System.out.println("Erro com os parametros - falta informar o nome do arquivo com descricao das OLTs");
+			return;
+		}
+		else{
+			if(args.length > 1){
+				System.out.println("Erro com os parametros - mais parametros do que o necessario");
+				return;
+			}
+		}
+				
 
-		String nomeArquivoOLTs = "olts_concessao_huawei";
+		String nomeArquivoOLTs = args[0];
 		ArrayList<Elemento> listaOLTs = new ArrayList<Elemento>();
 		
 		
 		try{
-    		FileReader fileReader = new FileReader(nomeArquivoOLTs+".txt");
+    		FileReader fileReader = new FileReader(nomeArquivoOLTs);
     			BufferedReader reader = new BufferedReader(fileReader);
     			String linha = null;
-    			StringBuffer sb = new StringBuffer();
     			while((linha = reader.readLine()) != null){
     				
     				Elemento olt = new Elemento();
@@ -308,7 +309,8 @@ public class Main {
     			reader.close();
     	}
     	catch(Exception e){
-    		System.out.println("Erro ao ler arquivo (Parametro Inicial)"+e.getMessage());
+    		System.out.println("Erro ao ler arquivo (Parametro Inicial) - verificar se o arquivo existe no disco \""+e.getMessage()+"\"");
+    		return;
     	}
 		
 		for (int i = 0; i < listaOLTs.size(); i++) {
